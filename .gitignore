@@ -1,4 +1,6 @@
 node_modules
+.vscode
+.DS_STORE
 
 /.cache
 /build
@@ -6,6 +8,8 @@ node_modules
 /public/build/
 /public/_dev
 /app/public/build
+/coverage
+
 /prisma/dev.sqlite
 /prisma/dev.sqlite-journal
 database.sqlite
