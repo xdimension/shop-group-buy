@@ -1,2 +1,6 @@
 SHOPIFY_API_KEY=
 SHOPIFY_TEST_WISHLIST_ID=
+
+# DATABASE
+DB_PROVIDER="sqlite"
+DB_URL="file:dev.sqlite"
