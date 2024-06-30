@@ -1,12 +1,17 @@
-<div class="groupbuy-inspire__icon" x-data="groupbuy">
+<div class="groupbuy-block" x-data="groupbuy">
 
-  <button type="button" @click.debounce="addToGroupbuy()">
-    <svg class="groupbuy-inspire__icon--svg" viewBox="0 0 24 24" stroke-width="2" stroke="#000" :fill="is_groupbuy ? '#000': '#fff' ">
+  <button class="groupbuy--btn" type="button" @click.debounce="addToGroupbuy()">
+    <svg class="groupbuy--svg" viewBox="0 0 24 24" stroke-width="2" stroke="#000" :fill="wanttobuy ? '#000': '#fff' ">
       <path d="M12 21.35l-1.45-1.32C5.4 15.73 2 12.27 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.77-3.4 7.23-8.55 11.53L12 21.35z"/>
     </svg>
-    {% if block.settings.text != blank %}
-      <span class="groupbuy-inspire__icon--text">{{ block.settings.text }}</span>
-    {% endif %}
+
+    <span class="groupbuy--text">
+      {% if block.settings.text == blank %}
+        Join Group Buy
+      {% else %}
+        {{ block.settings.text }}
+      {% endif %}
+    </span>
   </button>
 
 </div>
@@ -21,12 +26,12 @@
                   .then(response => response.json())
                   .then(result => {
                       if(result.data.length > 0){
-                        this.is_groupbuy = true;
+                        this.wanttobuy = true;
                       }
                   })
                   .catch(error => console.log('error', error));
             },
-            is_groupbuy: false,
+            wanttobuy: false,
             appUrl: "https://barrel-searched-terry-spatial.trycloudflare.com/",
             addToGroupbuy() {
                 // TODO: send data to database save groupbuy
@@ -43,8 +48,8 @@
                 formdata.append("_action", "CREATE");
 
                 // If product is already in groupbuy, remove it
-                if(this.is_groupbuy){
-                  this.is_groupbuy = false;
+                if(this.wanttobuy){
+                  this.wanttobuy = false;
                   // update formdata _action to delete
                   formdata.set("_action", "DELETE");
                 }
@@ -58,10 +63,10 @@
                 fetch(this.appUrl + "api/groupbuy", requestOptions)
                     .then(response => response.json())
                     .then(result => {
-                        if(result.is_groupbuy){
-                          this.is_groupbuy = true;
+                        if(result.wanttobuy){
+                          this.wanttobuy = true;
                         }else{
-                          this.is_groupbuy = false;
+                          this.wanttobuy = false;
                         }
                     })
                     .catch(error => console.log('error', error));
@@ -74,12 +79,12 @@
 
 
 <style>
-  .groupbuy-inspire__icon{
+  .groupbuy-block{
     display: flex;
     justify-content: center;
     max-width: 44rem;
   }
-  .groupbuy-inspire__icon button{
+  .groupbuy--btn{
     background: none;
     border: none;
     padding: 0;
@@ -89,15 +94,15 @@
     gap: 0.5rem;
     align-items: center;
   }
-  .groupbuy-inspire__icon--svg{
+  .groupbuy--svg{
     width: 2rem;
     height: 2rem;
   }
-
 </style>
+
 {% schema %}
 {
-  "name": "Group buy icon",
+  "name": "Group Buy button",
   "target": "section",
   "settings": [
     {
@@ -110,13 +115,7 @@
       "type": "text",
       "id": "text",
       "label": "Text",
-      "default": "Add to groupbuy"
-    },
-    {
-      "type": "color",
-      "id": "colour",
-      "label": "Icon Colour",
-      "default": "#ff0000"
+      "default": "Join Group Buy"
     }
   ]
 }
