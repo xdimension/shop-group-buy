@@ -20,7 +20,7 @@ export async function loader({ request }) {
   }
 
   // If customerId, shop, productId is provided, return group-buy items for that customer.
-  const groupitems = await db.groupitems.findMany({
+  const groupitems = await db.groupbuy.findMany({
     where: {
       customerId: customerId,
       shop: shop,
