@@ -15,6 +15,7 @@ node_modules
 database.sqlite
 
 .env
+.env.shop-group-buy
 package-lock.json
 yarn.lock
 shopify.app.shop-group-buy.toml
