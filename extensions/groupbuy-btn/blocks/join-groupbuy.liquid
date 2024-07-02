@@ -32,46 +32,44 @@
                   .catch(error => console.log('error', error));
             },
             wanttobuy: false,
-            appUrl: "https://barrel-searched-terry-spatial.trycloudflare.com/",
+            appUrl: "https://accounts-reporters-recovery-landscapes.trycloudflare.com/",
             addToGroupbuy() {
-                // TODO: send data to database save groupbuy
                 {%  unless customer  %}
                   // If customer is not login, show an alert to login
                   alert('Please login to add to groupbuy');
                   return;
                 {% endunless %}
 
-                var formdata = new FormData();
-                formdata.append("customerId", "{{ customer.id }}");
-                formdata.append("productId", "{{ product.id }}");
-                formdata.append("shop", "{{ shop.permanent_domain }}");
-                formdata.append("_action", "CREATE");
-
-                // If product is already in groupbuy, remove it
-                if(this.wanttobuy){
-                  this.wanttobuy = false;
-                  // update formdata _action to delete
-                  formdata.set("_action", "DELETE");
+                if (this.wanttobuy) {
+                  alert("You've already joined Group Buying for this product")
+                  return;
                 }
 
-                var requestOptions = {
-                  method: 'POST',
-                  body: formdata,
-                  redirect: 'follow'
-                };
+                if (confirm("Join Group Buying for this product?")) {
 
-                fetch(this.appUrl + "api/groupbuy", requestOptions)
-                    .then(response => response.json())
-                    .then(result => {
-                        if(result.wanttobuy){
-                          this.wanttobuy = true;
-                        }else{
-                          this.wanttobuy = false;
-                        }
-                    })
-                    .catch(error => console.log('error', error));
+                  var formdata = new FormData();
+                  formdata.append("customerId", "{{ customer.id }}");
+                  formdata.append("productId", "{{ product.id }}");
+                  formdata.append("shop", "{{ shop.permanent_domain }}");
+                  formdata.append("_action", "CREATE");
 
+                  var requestOptions = {
+                    method: 'POST',
+                    body: formdata,
+                    redirect: 'follow'
+                  };
 
+                  fetch(this.appUrl + "api/groupbuy", requestOptions)
+                      .then(response => response.json())
+                      .then(result => {
+                          if(result.wanttobuy){
+                            this.wanttobuy = true;
+                          }else{
+                            this.wanttobuy = false;
+                          }
+                      })
+                      .catch(error => console.log('error', error));
+                }
             }
         }))
     })
